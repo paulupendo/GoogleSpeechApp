@@ -19,12 +19,12 @@ import {
 //----------------------------------------------------------------
 class HomePage extends React.Component {
 
-  // ------------------------
-  // constructor
-  // ------------------------
-  constructor(props){
-    super(props);
-  }    
+  // // ------------------------
+  // // constructor
+  // // ------------------------
+  // constructor(props){
+  //   super(props);
+  // }
 
   // ------------------------
   // componentDidMount
@@ -40,8 +40,8 @@ class HomePage extends React.Component {
       console.log('dispatching -> get api');
       dispatch(studyActions.getAll(this.props.history));
     }
-    
-    this.handleRowSelection = this.handleRowSelection.bind(this);   
+
+    this.handleRowSelection = this.handleRowSelection.bind(this);
   }
 
   // ------------------------
@@ -61,7 +61,7 @@ class HomePage extends React.Component {
   render() {
 
     console.log("--- Home Page render got studies:" + JSON.stringify(this.props.studies) );
-     
+
      //----------------------------
      // fill up studies table data
      //----------------------------
@@ -115,7 +115,7 @@ function mapStateToProps(state) {
     studies: state.studies
   };
 }
- 
+
 const connectedHomePage = connect(mapStateToProps)(HomePage);
 
 export { connectedHomePage as HomePage };

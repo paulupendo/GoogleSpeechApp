@@ -8,7 +8,7 @@ export const studyActions = {
   selectedStudy
 };
 
-// 
+//
 //------------------- Request API --------------------
 //
 
@@ -24,7 +24,7 @@ function getAll(history) {
                   if(!studies.studies) {
 
                       // FIXME - remote this ugly code later
-                     if(studies.message == "Invalid token!") {
+                     if(studies.message === "Invalid token!") {
                         console.log("--- token expired, should redirect to login...");
                         localStorage.removeItem('user');
                         history.push("/login");
@@ -41,7 +41,7 @@ function getAll(history) {
             )
             .catch(function(error){
               console.log("study actions -> getAll got error: " + error);
-            }); 
+            });
   };
   function requestAll() {
     return {type: studyConstants.GETALL_REQUEST};
