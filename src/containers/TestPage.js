@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 
 
 const styles = {
-  
+
   div:{
     display: 'flex',
     flexDirection: 'row wrap',
@@ -37,13 +37,13 @@ class TestPage extends React.Component {
   constructor(props) {
     super(props);
 
-    //this.state = {   
+    //this.state = {
       //audioChunks: [],
     //};
 
     this.audioChunks = [];
     this.rec         = null;
-    
+
     this.abc = 12;//dummy
 
     this.setupMediaDevice   = this.setupMediaDevice.bind(this);
@@ -91,7 +91,7 @@ class TestPage extends React.Component {
          console.log('The following gUM error occured: ' + err);
       }
     );
-    
+
   }
 
   initializeRecorder(stream) {
@@ -107,20 +107,20 @@ class TestPage extends React.Component {
     this.rec = new MediaRecorder(stream);
     this.rec.ondataavailable = e => {
       page.audioChunks.push(e.data);
-      if (page.rec.state == "inactive"){
-        
+      if (page.rec.state === "inactive"){
+
         let blob = new Blob(page.audioChunks,{type:'audio/x-mpeg-3'});
-        
+
         recordedAudio.src       = URL.createObjectURL(blob);
         recordedAudio.controls  = true;
         recordedAudio.autoplay  = false;
-        
+
         audioDownload.href      = recordedAudio.src;
         audioDownload.download  = 'mp3';
         audioDownload.innerHTML = 'download';
       }
     }//ondataavailable
-  
+
   }//initializeRecorder
 
   startRecording() {
@@ -156,7 +156,7 @@ class TestPage extends React.Component {
                 STEP-2: <RaisedButton label="PLAY" primary={true} onClick={this.playRecording}/><br /><br /><br />
                 STEP-3: <RaisedButton label="SAVE" primary={true} onClick={this.saveRecording}/><br /><br /><br />
                 <audio id="recordedAudio"></audio>
-                <a id="audioDownload"></a>
+                {/* <a id="audioDownload"></a> */}
               </Paper>
             </div>
           </div>

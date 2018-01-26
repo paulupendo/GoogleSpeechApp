@@ -2,11 +2,11 @@ import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
+import axios from 'axios';
 import {connect} from 'react-redux';
 
-
 const styles = {
-  
+
   div:{
     display: 'flex',
     flexDirection: 'row wrap',
@@ -42,13 +42,13 @@ class SpeechTestPage extends React.Component {
   constructor(props) {
     super(props);
 
-    //this.state = {   
+    //this.state = {
       //audioChunks: [],
     //};
 
     this.audioChunks = [];
     this.rec         = null;
-    
+
     this.abc = 12;//dummy
 
     this.setupMediaDevice   = this.setupMediaDevice.bind(this);
@@ -96,7 +96,7 @@ class SpeechTestPage extends React.Component {
          console.log('The following gUM error occured: ' + err);
       }
     );
-    
+
   }
 
   initializeRecorder(stream) {
@@ -113,12 +113,12 @@ class SpeechTestPage extends React.Component {
     this.rec.ondataavailable = e => {
       page.audioChunks.push(e.data);
       if (page.rec.state == "inactive"){
-        
+
         //page.blob = new Blob(page.audioChunks,{type:'audio/x-mpeg-3'});
         page.blob = new Blob(page.audioChunks,{type:'audio/ogg'});
-        
+
         //page.blob = new Blob(page.audioChunks,{type:'audio/wav'});
-        
+
         recordedAudio.src       = URL.createObjectURL(page.blob);
         recordedAudio.controls  = true;
         recordedAudio.autoplay  = false;
@@ -130,13 +130,14 @@ class SpeechTestPage extends React.Component {
         audioDownload.innerHTML = 'download';
       }
     }//ondataavailable
-  
+
   }//initializeRecorder
 
   startRecording() {
     console.log("-- startRecording --");
     this.audioChunks = [];
     this.rec.start();
+    axios.get('http://0.0.0.0:8080/api/study')
     console.log("-- startRecording done");
   }
 
@@ -161,7 +162,8 @@ class SpeechTestPage extends React.Component {
 
     var form = new FormData(document.getElementById("my_form"));
     //form.append("rec_file", dataFile);
-    form.append("text", "hello");
+    form.append("text", document.getElementById("text").innerHTML);
+    console.log(document.getElementById("text").innerHTML)
     form.append("rec_file", this.blob, "rec_data1.wav");
 
     //form.append("rec_file", rec_file, "rec_file");
@@ -169,7 +171,8 @@ class SpeechTestPage extends React.Component {
 
     var request = new XMLHttpRequest();
     var async = true;
-    request.open("POST", "http://52.230.8.132:8080/api/matching_test", async);
+    request.open("GET", "http://0.0.0.0:8080/api/study")
+    request.open("POST", "http://0.0.0.0:8080/api/matching_test", async);
     if (async) {
         request.onreadystatechange = function() {
             if(request.readyState == 4 && request.status == 200) {
@@ -202,7 +205,7 @@ class SpeechTestPage extends React.Component {
         return true;
 
   }
-   
+
   render() {
 
     var paragraphText = '';
@@ -222,13 +225,14 @@ class SpeechTestPage extends React.Component {
             <div style={styles.div}>
               <Paper zDepth={3} style={styles.paperLeft}>
                 <h4>Paragraph</h4>
-                <p>
+                <p id='text'>
                   {paragraphText}
                 </p>
               </Paper>
               <Paper zDepth={3} style={styles.paperRight}>
                 <h4>Record & Test</h4>
-                <form id="form1" action="http://52.230.8.132:8080/api/matching_test"  enctype="multipart/form-data" method="post"  >
+                <form id="form1" action="http://0.0.0.0:8080/api/matching_test"
+                  enctype="multipart/form-data" method="post"  >
                 <input type="hidden" name="text" value="text" />
                 STEP-1: <RaisedButton label="RECORD" primary={true} onClick={this.startRecording}/> <RaisedButton label="STOP" primary={true} onClick={this.stopRecording}/><br /><br /><br />
                 STEP-2: <RaisedButton label="PLAY" primary={true} onClick={this.playRecording}/><br /><br /><br />

@@ -2,11 +2,9 @@ import {studyConstants} from '../constants';
 
 export function studies(state = {},action) {
   switch (action.type) {
-    
+
     case studyConstants.GETALL_REQUEST:
       return {
-        
-       
       };
     case studyConstants.GETALL_SUCCESS:
 
@@ -18,7 +16,7 @@ export function studies(state = {},action) {
         error: action.error,
       };
 
-    
+
     default:
       return state;
   }

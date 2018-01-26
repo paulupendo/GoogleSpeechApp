@@ -1,8 +1,9 @@
 import {authHeader} from '../helpers';
+import axios from 'axios';
 
 export const studyService = {
     getAll,
-    
+
 };
 
 function getAll(token) {
@@ -19,13 +20,14 @@ function getAll(token) {
         console.warn("failed to get token !~~");
     }
 
-    var url = 'http://52.230.8.132:8080/api/get_study_material?token='+token;
+    axios.get('http://0.0.0.0:8080/api/study?token='+token);
+    var url = 'http://0.0.0.0:8080/api/get_study_material?token='+token;
 
     return fetch(url, requestOptions)
         .then(function(response) {
             if (!response.ok) {
                 return Promise.reject(response.statusText);
-            }   
+            }
             return response.json();
         })
         .then(function(resp) {
