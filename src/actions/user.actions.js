@@ -3,6 +3,7 @@ import {userService} from '../services';
 import {alertActions} from './';
 
 
+
 export const userActions = {
   login,
   logout,
@@ -24,6 +25,7 @@ function login(history, email, password) {
             .then(
                 (user) => {
                   dispatch(success(user));
+                  history.push('/')
                   console.log('FIXME :: action:login: push / ???');
                   
                 },

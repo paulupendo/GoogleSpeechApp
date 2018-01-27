@@ -1,35 +1,40 @@
-import {authHeader} from '../helpers';
+import { authHeader } from '../helpers';
+import axios from 'axios';
 
 export const studyService = {
-    getAll,
-    
+  getAll,
 };
 
 function getAll(token) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader(),
-    };
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader(),
+  };
 
-    var user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-        token = user.token;
-        console.log("token: " + token);
-    } else {
-        console.warn("failed to get token !~~");
-    }
+  var user = JSON.parse(localStorage.getItem('user'));
+  if (user) {
+    token = user.token;
+    console.log('token: ' + token);
+  } else {
+    console.warn('failed to get token !~~');
+  }
 
-    var url = 'http://52.230.8.132:8080/api/get_study_material?token='+token;
+  axios
+    .get('http://0.0.0.0:8080/api/study?token=' + token)
+    .then(resp => console.log('LOAD DB SUCCESS', resp))
+    .catch(err => console.log('ERR', err));
 
-    return fetch(url, requestOptions)
-        .then(function(response) {
-            if (!response.ok) {
-                return Promise.reject(response.statusText);
-            }   
-            return response.json();
-        })
-        .then(function(resp) {
-            //console.log("study.service :: handleStudiesResponse(), resp: " + JSON.stringify(resp) );
-            return resp;
-        });
+  var url = 'http://0.0.0.0:8080/api/get_study_material?token=' + token; // retrieve data from study db
+
+  return fetch(url, requestOptions)
+    .then(function(response) {
+      if (!response.ok) {
+        return Promise.reject(response.statusText);
+      }
+      return response.json();
+    })
+    .then(function(resp) {
+      //console.log("study.service :: handleStudiesResponse(), resp: " + JSON.stringify(resp) );
+      return resp;
+    });
 }
