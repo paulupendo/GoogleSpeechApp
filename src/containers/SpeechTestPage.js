@@ -3,6 +3,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import { connect } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
 
 const styles = {
   div: {
@@ -44,6 +45,7 @@ class SpeechTestPage extends React.Component {
 
     this.audioChunks = [];
     this.rec = null;
+    this.comparison = '';
 
     this.abc = 12; //dummy
 
@@ -53,6 +55,7 @@ class SpeechTestPage extends React.Component {
     this.stopRecording = this.stopRecording.bind(this);
     this.playRecording = this.playRecording.bind(this);
     this.saveRecording = this.saveRecording.bind(this);
+    this.notify = this.notify.bind(this);
 
     this.setupMediaDevice();
   }
@@ -156,9 +159,10 @@ class SpeechTestPage extends React.Component {
 
     var request = new XMLHttpRequest();
     var async = true;
+    let that = this;
     request.open('POST', 'http://0.0.0.0:8080/api/matching_test', async);
     if (async) {
-      request.onreadystatechange = function() {
+      request.onreadystatechange = () => {
         if (request.readyState == 4 && request.status == 200) {
           var response = null;
           try {
@@ -167,12 +171,22 @@ class SpeechTestPage extends React.Component {
             response = request.responseText;
           }
           //uploadFormCallback(response);
+
+          this.comparison = response.Comparison_percentage;
+          this.comparison.length > 0 ? that.notify() : null;
           console.log('--- response: ' + JSON.stringify(response));
         }
       };
     }
     request.send(form);
   }
+
+  notify = () => {
+    console.log(this.comparison);
+    toast.success('Accuracy score: ' + this.comparison, {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  };
 
   saveRecording1() {
     console.log('-- saveRecording --');
@@ -250,6 +264,7 @@ class SpeechTestPage extends React.Component {
                     primary={true}
                     onClick={this.saveRecording}
                   />
+                  <ToastContainer autoClose={8000} />
                   <br />
                   <br />
                   <br />
