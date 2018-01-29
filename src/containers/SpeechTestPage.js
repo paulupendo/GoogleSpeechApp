@@ -218,65 +218,63 @@ class SpeechTestPage extends React.Component {
     }
 
     return (
-      <div>
-        <MuiThemeProvider>
-          <div>
-            <div style={styles.div}>
-              <Paper zDepth={3} style={styles.paperLeft}>
-                <h4>Paragraph</h4>
-                <p id="text">{paragraphText}</p>
-              </Paper>
-              <Paper zDepth={3} style={styles.paperRight}>
-                <h4>Record & Test</h4>
-                <form
-                  id="form1"
-                  action="http://52.230.8.132:8080/api/matching_test"
-                  encType="multipart/form-data"
-                  method="post"
-                >
-                  <input type="hidden" name="text" value="text" />
-                  STEP-1:{' '}
-                  <RaisedButton
-                    label="RECORD"
-                    primary={true}
-                    onClick={this.startRecording}
-                  />{' '}
-                  <RaisedButton
-                    label="STOP"
-                    primary={true}
-                    onClick={this.stopRecording}
-                  />
-                  <br />
-                  <br />
-                  <br />
-                  STEP-2:{' '}
-                  <RaisedButton
-                    label="PLAY"
-                    primary={true}
-                    onClick={this.playRecording}
-                  />
-                  <br />
-                  <br />
-                  <br />
-                  STEP-3:{' '}
-                  <RaisedButton
-                    label="SAVE"
-                    primary={true}
-                    onClick={this.saveRecording}
-                  />
-                  <ToastContainer autoClose={8000} />
-                  <br />
-                  <br />
-                  <br />
-                  <audio id="recordedAudio" />
-                  <br />
-                  <a id="audioDownload" />
-                </form>
-              </Paper>
-            </div>
+      <MuiThemeProvider>
+        <div>
+          <div style={styles.div}>
+            <Paper zDepth={3} style={styles.paperLeft}>
+              <h4>Paragraph</h4>
+              <p id="text">{paragraphText}</p>
+            </Paper>
+            <Paper zDepth={3} style={styles.paperRight}>
+              <h4>Record & Test</h4>
+              <form
+                id="form1"
+                action="http://52.230.8.132:8080/api/matching_test"
+                encType="multipart/form-data"
+                method="post"
+              >
+                <input type="hidden" name="text" value="text" />
+                STEP-1:{' '}
+                <RaisedButton
+                  label="RECORD"
+                  primary={true}
+                  onClick={this.startRecording}
+                />{' '}
+                <RaisedButton
+                  label="STOP"
+                  primary={true}
+                  onClick={this.stopRecording}
+                />
+                <br />
+                <br />
+                <br />
+                STEP-2:{' '}
+                <RaisedButton
+                  label="PLAY"
+                  primary={true}
+                  onClick={this.playRecording}
+                />
+                <br />
+                <br />
+                <br />
+                STEP-3:{' '}
+                <RaisedButton
+                  label="SAVE"
+                  primary={true}
+                  onClick={this.saveRecording}
+                />
+                <ToastContainer autoClose={8000} />
+                <br />
+                <br />
+                <br />
+                <audio id="recordedAudio" />
+                <br />
+                <a id="audioDownload" />
+              </form>
+            </Paper>
           </div>
-        </MuiThemeProvider>
-      </div>
+        </div>
+      </MuiThemeProvider>
     );
   } //render
 } //SpeechTestPage

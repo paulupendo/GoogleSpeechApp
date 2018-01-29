@@ -13,6 +13,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import '../index.js'
 
 //----------------------------------------------------------------
 //
@@ -100,33 +101,27 @@ class HomePage extends React.Component {
       }
     }
 
-    const styles = {
-      btn: {
-        display: 'block',
-        float: 'right',
-        marginRight: 30,
-      },
-    };
-
     return (
       <MuiThemeProvider>
-        <ReactFileReader handleFiles={this.handleFiles} fileTypes={'.csv'}>
-          <RaisedButton primary={true} style={styles.btn} label="UPLOAD CSV" />
-        </ReactFileReader>
-        <Table onRowSelection={this.handleRowSelection}>
-          <TableHeader>
-            <TableRow>
-              <TableHeaderColumn>#</TableHeaderColumn>
-              <TableHeaderColumn>Date</TableHeaderColumn>
-              <TableHeaderColumn>Type</TableHeaderColumn>
-              <TableHeaderColumn>Word</TableHeaderColumn>
-              <TableHeaderColumn>Status</TableHeaderColumn>
-              <TableHeaderColumn>GCS%</TableHeaderColumn>
-              <TableHeaderColumn>GCS conf</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody>{tableBody}</TableBody>
-        </Table>
+        <div className='container'>
+          <ReactFileReader handleFiles={this.handleFiles} fileTypes={'.csv'}>
+            <RaisedButton primary={true} className='btn' label="UPLOAD CSV" />
+          </ReactFileReader>
+          <Table onRowSelection={this.handleRowSelection} className='table'>
+            <TableHeader>
+              <TableRow>
+                <TableHeaderColumn>#</TableHeaderColumn>
+                <TableHeaderColumn>Date</TableHeaderColumn>
+                <TableHeaderColumn>Type</TableHeaderColumn>
+                <TableHeaderColumn>Word</TableHeaderColumn>
+                <TableHeaderColumn>Status</TableHeaderColumn>
+                <TableHeaderColumn>GCS%</TableHeaderColumn>
+                <TableHeaderColumn>GCS conf</TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody>{tableBody}</TableBody>
+          </Table>
+        </div>
       </MuiThemeProvider>
     );
   } //render
