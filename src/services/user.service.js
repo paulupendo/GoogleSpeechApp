@@ -20,7 +20,7 @@ function login(history,email, password) {
 
     console.log("----> body: " + body);
 
-    return fetch('http://0.0.0.0:8080/api/user_login', requestOptions)
+    return fetch('http://52.230.8.132:8080/api/user_login', requestOptions)
         .then((response) => {
             if (!response.ok) {
                 return Promise.reject(response.statusText);
@@ -73,7 +73,7 @@ function register(user) {
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: body,
     };
-    return fetch('http://0.0.0.0:8080/api/user_registration', requestOptions).then(handleResponse);
+    return fetch('http://52.230.8.132:8080/api/user_registration', requestOptions).then(handleResponse);
 
 }
 

@@ -160,7 +160,7 @@ class SpeechTestPage extends React.Component {
     var request = new XMLHttpRequest();
     var async = true;
     let that = this;
-    request.open('POST', 'http://0.0.0.0:8080/api/matching_test', async);
+    request.open('POST', 'http://52.230.8.132:8080/api/matching_test', async);
     if (async) {
       request.onreadystatechange = () => {
         if (request.readyState == 4 && request.status == 200) {
@@ -230,7 +230,7 @@ class SpeechTestPage extends React.Component {
                 <h4>Record & Test</h4>
                 <form
                   id="form1"
-                  action="http://0.0.0.0:8080/api/matching_test"
+                  action="http://52.230.8.132:8080/api/matching_test"
                   encType="multipart/form-data"
                   method="post"
                 >
