@@ -3,7 +3,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
 import { ToastContainer, toast } from 'react-toastify';
+import { studyActions } from '../actions';
 
 const styles = {
   div: {
@@ -42,6 +44,9 @@ class SpeechTestPage extends React.Component {
     //this.state = {
     //audioChunks: [],
     //};
+    this.state = {
+      study: {}
+    }
 
     this.audioChunks = [];
     this.rec = null;
@@ -60,6 +65,21 @@ class SpeechTestPage extends React.Component {
     this.notify_text = this.notify_text.bind(this)
 
     this.setupMediaDevice();
+  }
+  componentWillMount() {
+
+    if (this.props.studies && this.props.selectedStudy) {
+      // use first element of selectedStudy
+      const study = this.props.studies[this.props.selectedStudy[0]];
+      console.log(
+        '>>>>>>>>> SpeechTestPage got study: ' + JSON.stringify(study),
+      );
+
+      this.setState({
+        study,
+      })
+    }
+
   }
 
   setupMediaDevice() {
@@ -198,7 +218,10 @@ class SpeechTestPage extends React.Component {
       };
     }
     request.send(form);
-
+    const study = this.props.studies[this.props.studies.indexOf(this.state.study)+1];
+    this.setState({
+      study,
+    })
   }
 
   accuracy_comparison = () => {
@@ -232,27 +255,13 @@ class SpeechTestPage extends React.Component {
   }
 
   render() {
-    var paragraphText = '';
-
-    if (this.props.studies && this.props.selectedStudy) {
-      // use first element of selectedStudy
-      const study = this.props.studies[this.props.selectedStudy[0]];
-      console.log(
-        '>>>>>>>>> SpeechTestPage got study: ' + JSON.stringify(study),
-      );
-
-      if (study) {
-        paragraphText = study.Paragraph_Text;
-      }
-    }
-
     return (
       <MuiThemeProvider>
         <div>
           <div style={styles.div}>
             <Paper zDepth={3} style={styles.paperLeft}>
               <h4>Paragraph</h4>
-              <p id="text">{paragraphText}</p>
+              <p id="text">{this.state.study.Paragraph_Text}</p>
             </Paper>
             <Paper zDepth={3} style={styles.paperRight}>
               <h4>Record & Test</h4>
