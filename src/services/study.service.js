@@ -20,12 +20,12 @@ function getAll(token) {
   }
 
   axios
-    .get('http://0.0.0.0:8080/api/study?token=' + token)
+    .get('http://52.230.8.132:8080/api/study?token=' + token)
     .then(resp => console.log('[LOAD DB SUCCESS]', resp))
     .catch(err => console.log('ERR', err));
 
 
-  var url = 'http://0.0.0.0:8080/api/get_study_material?token=' + token; // retrieve data from study db
+  var url = 'http://52.230.8.132:8080/api/get_study_material?token=' + token; // retrieve data from study db
 
   return fetch(url, requestOptions)
     .then(function(response) {
