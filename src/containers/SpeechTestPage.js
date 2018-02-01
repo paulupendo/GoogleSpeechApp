@@ -46,6 +46,7 @@ class SpeechTestPage extends React.Component {
     this.audioChunks = [];
     this.rec = null;
     this.comparison = '';
+    this.transcribed_text = '';
 
     this.abc = 12; //dummy
 
@@ -55,7 +56,8 @@ class SpeechTestPage extends React.Component {
     this.stopRecording = this.stopRecording.bind(this);
     this.playRecording = this.playRecording.bind(this);
     this.saveRecording = this.saveRecording.bind(this);
-    this.notify = this.notify.bind(this);
+    this.accuracy_comparison = this.accuracy_comparison.bind(this);
+    this.notify_text = this.notify_text.bind(this)
 
     this.setupMediaDevice();
   }
@@ -160,7 +162,7 @@ class SpeechTestPage extends React.Component {
     var request = new XMLHttpRequest();
     var async = true;
     let that = this;
-    request.open('POST', 'http://52.230.8.132:8080/api/matching_test', async);
+    request.open('POST', 'http://0.0.0.0:8080/api/matching_test', async);
     if (async) {
       request.onreadystatechange = () => {
         if (request.readyState == 4 && request.status == 200) {
@@ -173,18 +175,45 @@ class SpeechTestPage extends React.Component {
           //uploadFormCallback(response);
 
           this.comparison = response.Comparison_percentage;
-          this.comparison.length > 0 ? that.notify() : null;
+          if (this.comparison) {
+            this.comparison.length > 0 ? this.accuracy_comparison() : null;
+          } else {
+            toast.success('No Recording' , {
+              position: toast.POSITION.TOP_RIGHT,
+            });
+          }
+
+          this.transcribed_text = response.transcribed_text;
+          if (this.transcribed_text) {
+            this.transcribed_text.length > 0 ? this.notify_text() : null;
+          } else {
+            toast.success('No transcribed text' , {
+              position: toast.POSITION.TOP_RIGHT,
+            });
+          }
+
+
           console.log('--- response: ' + JSON.stringify(response));
         }
       };
     }
     request.send(form);
+
   }
 
-  notify = () => {
+  accuracy_comparison = () => {
     console.log(this.comparison);
     toast.success('Accuracy score: ' + this.comparison, {
       position: toast.POSITION.TOP_RIGHT,
+      autoClose: 15000,
+    });
+  };
+
+  notify_text = () => {
+    console.log(this.transcribed_text);
+    toast.success('Transcribed text: ' + this.transcribed_text, {
+      position: toast.POSITION.TOP_RIGHT,
+      autoClose: 15000,
     });
   };
 

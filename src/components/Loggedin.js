@@ -4,7 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import {connect} from 'react-redux';
 
 
-const styles = {  
+const styles = {
   mybtn: {
       color: 'white'
      }
@@ -37,6 +37,3 @@ function mapStateToProps(state) {
 
 const connectedLoggedin = connect(mapStateToProps)(Loggedin);
 export {connectedLoggedin as Loggedin};
-
-
-

@@ -47,6 +47,11 @@ class HomePage extends React.Component {
     this.handleFiles = this.handleFiles.bind(this);
   }
 
+  componentWillRecieveProps(NextProps) {
+    const { dispatch } = this.props;
+    dispatch(studyActions.getAll(this.props.history));
+  }
+
   // ------------------------
   // handleRowSelection
   // ------------------------
@@ -59,7 +64,7 @@ class HomePage extends React.Component {
   };
 
   handleFiles = files => {
-    let url = 'http://52.230.8.132:8080/api/add_study';
+    let url = 'http://0.0.0.0:8080/api/add_study';
     let file = new FormData();
     file.append('study_file', files[0], files[0].name);
 
@@ -91,7 +96,8 @@ class HomePage extends React.Component {
             console.log("got study: " + study.Date_of_Upload);
             <TableRowColumn>{study.id}</TableRowColumn>
             <TableRowColumn>{study.created_at}</TableRowColumn>
-            <TableRowColumn>{study.Paragraph_Type}</TableRowColumn>
+            <TableRowColumn>{study.Paragraph_Text}</TableRowColumn>
+            <TableRowColumn>{study.GCS_Output}</TableRowColumn>
             <TableRowColumn>{study.Word_Count}</TableRowColumn>
             <TableRowColumn>{study.Status}</TableRowColumn>
             <TableRowColumn>{study.GCS_Acc}</TableRowColumn>
@@ -109,17 +115,18 @@ class HomePage extends React.Component {
           </ReactFileReader>
           <Table onRowSelection={this.handleRowSelection} className='table'>
             <TableHeader>
-              <TableRow>
-                <TableHeaderColumn>#</TableHeaderColumn>
+              <TableRow style={{backgroundColor: 'rgb(236, 236, 236)'}}>
+                <TableHeaderColumn>id</TableHeaderColumn>
                 <TableHeaderColumn>Date</TableHeaderColumn>
-                <TableHeaderColumn>Type</TableHeaderColumn>
+                <TableHeaderColumn>Text</TableHeaderColumn>
+                <TableHeaderColumn>Output</TableHeaderColumn>
                 <TableHeaderColumn>Word</TableHeaderColumn>
                 <TableHeaderColumn>Status</TableHeaderColumn>
                 <TableHeaderColumn>GCS%</TableHeaderColumn>
                 <TableHeaderColumn>GCS conf</TableHeaderColumn>
               </TableRow>
             </TableHeader>
-            <TableBody>{tableBody}</TableBody>
+            <TableBody showRowHover={true}>{tableBody}</TableBody>
           </Table>
         </div>
       </MuiThemeProvider>
