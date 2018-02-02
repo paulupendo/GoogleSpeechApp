@@ -19,7 +19,7 @@ function getAll(token) {
     console.warn('failed to get token !~~');
   }
 
-  var url = 'http://0.0.0.0:8080/api/get_study_material?token=' + token; // retrieve data from study db
+  var url = 'http://52.230.8.132:8080/api/get_study_material?token=' + token; // retrieve data from study db
 
   return fetch(url, requestOptions)
     .then(function(response) {

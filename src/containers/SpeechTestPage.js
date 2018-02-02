@@ -192,7 +192,7 @@ class SpeechTestPage extends React.Component {
     var request = new XMLHttpRequest();
     var async = true;
     let that = this;
-    request.open('POST', 'http://0.0.0.0:8080/api/matching_test', async);
+    request.open('POST', 'http://52.230.8.132:8080/api/matching_test', async);
     if (async) {
       request.onreadystatechange = () => {
         if (request.readyState == 4 && request.status == 200) {
@@ -286,7 +286,7 @@ class SpeechTestPage extends React.Component {
               <div style={{backgroundColor: '#000', width: '100%', marginTop: '0px',  color: '#fff',paddingTop: '15px', height: '5%', fontSize: '0.9em', marginBottom: '30px'}}>Record and Analyse</div>
               <form
                 id="form1"
-                action="http://0.0.0.0:8080/api/matching_test"
+                action="http://52.230.8.132:8080/api/matching_test"
                 encType="multipart/form-data"
                 method="post"
               >

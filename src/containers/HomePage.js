@@ -55,7 +55,7 @@ class HomePage extends React.Component {
   };
 
   handleFiles = files => {
-    let url = 'http://0.0.0.0:8080/api/add_study';
+    let url = 'http://52.230.8.132:8080/api/add_study';
     let file = new FormData();
     file.append('study_file', files[0], files[0].name);
 
@@ -73,7 +73,7 @@ class HomePage extends React.Component {
     }
 
     axios
-      .get('http://0.0.0.0:8080/api/study?token=' + token)
+      .get('http://52.230.8.132:8080/api/study?token=' + token)
       .then(resp => console.log('[LOAD CSV SUCCESS]', resp))
       .catch(err => console.log('ERR', err));
   };
