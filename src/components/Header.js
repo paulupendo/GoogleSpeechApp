@@ -21,10 +21,12 @@ export default class Header extends React.Component {
             <MuiThemeProvider>
               <div>
                 <AppBar
-                  title="SPEECH TEST"
-                  showMenuIconButton={true}
+                  title="Speech Analysis"
+                  showMenuIconButton={false}
                   iconElementRight={loggedIn ? <Loggedin /> :  <Loggedout />}
+                  style={{backgroundColor: '#15A9E1'}}
                 />
+
 
               </div>
             </MuiThemeProvider>

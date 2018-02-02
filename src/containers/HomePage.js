@@ -14,23 +14,19 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import '../index.js'
+import { studyService } from '../services/study.service'
+const styles = {
+  tableRows: {
+    textAlign: 'center',
+    width: '200px'
+  }
+}
 
-//----------------------------------------------------------------
-//
-//          HOME PAGE
-//
-//----------------------------------------------------------------
 class HomePage extends React.Component {
-  // ------------------------
-  // constructor
-  // ------------------------
+
   constructor(props) {
     super(props);
   }
-
-  // ------------------------
-  // componentDidMount
-  // ------------------------
   componentDidMount() {
     const { dispatch } = this.props;
 
@@ -47,11 +43,6 @@ class HomePage extends React.Component {
     this.handleFiles = this.handleFiles.bind(this);
   }
 
-  componentWillRecieveProps(NextProps) {
-    const { dispatch } = this.props;
-    dispatch(studyActions.getAll(this.props.history));
-  }
-
   // ------------------------
   // handleRowSelection
   // ------------------------
@@ -64,7 +55,7 @@ class HomePage extends React.Component {
   };
 
   handleFiles = files => {
-    let url = 'http://52.230.8.132:8080/api/add_study';
+    let url = 'http://0.0.0.0:8080/api/add_study';
     let file = new FormData();
     file.append('study_file', files[0], files[0].name);
 
@@ -73,7 +64,20 @@ class HomePage extends React.Component {
       .then(response => console.log('SUCCESSFULLY UPLOADED FILE', response))
       .catch(err => console.log('ERROR UPLOADING FILE', err));
 
+    var user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      var token = user.token;
+      console.log('token: ' + token);
+    } else {
+      console.warn('failed to get token !~~');
+    }
+
+    axios
+      .get('http://0.0.0.0:8080/api/study?token=' + token)
+      .then(resp => console.log('[LOAD CSV SUCCESS]', resp))
+      .catch(err => console.log('ERR', err));
   };
+
 
   // ------------------------
   // render
@@ -89,19 +93,14 @@ class HomePage extends React.Component {
     var tableBody = [];
     if (this.props.studies) {
       for (var i = 0; i < this.props.studies.length; i++) {
-        //console.log("study " + (i+1) + ":" + JSON.stringify(this.props.studies[i]));
         var study = this.props.studies[i];
         tableBody.push(
           <TableRow key={study.id}>
-            console.log("got study: " + study.Date_of_Upload);
-            <TableRowColumn>{study.id}</TableRowColumn>
-            <TableRowColumn>{study.created_at}</TableRowColumn>
-            <TableRowColumn>{study.Paragraph_Text}</TableRowColumn>
-            <TableRowColumn>{study.GCS_Output}</TableRowColumn>
-            <TableRowColumn>{study.Word_Count}</TableRowColumn>
-            <TableRowColumn>{study.Status}</TableRowColumn>
-            <TableRowColumn>{study.GCS_Acc}</TableRowColumn>
-            <TableRowColumn>{study.GCS_Conf}</TableRowColumn>
+            <TableRowColumn style={{width: '50px', textAlign: 'center'}}>{study.id}</TableRowColumn>
+            <TableRowColumn style={styles.tableRows}>{study.created_at}</TableRowColumn>
+            <TableRowColumn style={styles.tableRows}>{study.Status}</TableRowColumn>
+            <TableRowColumn style={styles.tableRows}>{study.GCS_Acc}</TableRowColumn>
+            <TableRowColumn style={styles.tableRows}>{study.GCS_Conf}</TableRowColumn>
           </TableRow>,
         );
       }
@@ -109,21 +108,20 @@ class HomePage extends React.Component {
 
     return (
       <MuiThemeProvider>
-        <div className='container'>
+        <div style={{display: 'flex', justifyContent: 'flex-end', marginRight: '4%'}}>
           <ReactFileReader handleFiles={this.handleFiles} fileTypes={'.csv'}>
-            <RaisedButton primary={true} className='btn' label="UPLOAD CSV" />
+            <RaisedButton className='btn' label="UPLOAD CSV" backgroundColor={'#15A9E1'} labelColor={'#fff'}/>
           </ReactFileReader>
-          <Table onRowSelection={this.handleRowSelection} className='table'>
+        </div>
+        <div className='container'>
+          <Table onRowSelection={this.handleRowSelection} className='table' fixedHeader={true} height={'100%'}>
             <TableHeader>
               <TableRow style={{backgroundColor: 'rgb(236, 236, 236)'}}>
-                <TableHeaderColumn>id</TableHeaderColumn>
-                <TableHeaderColumn>Date</TableHeaderColumn>
-                <TableHeaderColumn>Text</TableHeaderColumn>
-                <TableHeaderColumn>Output</TableHeaderColumn>
-                <TableHeaderColumn>Word</TableHeaderColumn>
-                <TableHeaderColumn>Status</TableHeaderColumn>
-                <TableHeaderColumn>GCS%</TableHeaderColumn>
-                <TableHeaderColumn>GCS conf</TableHeaderColumn>
+                <TableHeaderColumn style={{width: '50px'}}>Paragraph id</TableHeaderColumn>
+                <TableHeaderColumn style={styles.tableRows}>Date Uploaded</TableHeaderColumn>
+                <TableHeaderColumn style={styles.tableRows}>Status</TableHeaderColumn>
+                <TableHeaderColumn style={styles.tableRows}>GCS%</TableHeaderColumn>
+                <TableHeaderColumn style={styles.tableRows}>GCS conf</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody showRowHover={true}>{tableBody}</TableBody>
