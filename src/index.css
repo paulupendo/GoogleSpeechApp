@@ -8,11 +8,9 @@ body {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-end;
-  width: 90%;
   margin: 10px auto;
   border: 1px solid gainsboro;
   border-radius: 3px;
-  box-shadow: -2px -2px 2px 0px gainsboro;
 }
 .btn {
   display: flex;
