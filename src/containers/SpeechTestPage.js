@@ -3,7 +3,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux'
+import { bindActionCreators } from 'redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { studyActions } from '../actions';
 
@@ -12,7 +12,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'row wrap',
     padding: 20,
-    position: 'relative'
+    position: 'relative',
   },
   paperLeft: {
     flex: 2,
@@ -26,15 +26,15 @@ const styles = {
     margin: '10px 15px 10px 10px',
     textAlign: 'center',
   },
-  buttonsDiv:{
+  buttonsDiv: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   individualButtons: {
-    marginBottom:'20px',
-    width:'80%',
-    marginLeft:'50px',
-  }
+    marginBottom: '20px',
+    width: '80%',
+    marginLeft: '50px',
+  },
 }; //styles
 //---------------------------------------------------
 //
@@ -54,8 +54,8 @@ class SpeechTestPage extends React.Component {
     this.state = {
       study: {},
       recording: false,
-      transcribed_text:''
-    }
+      transcribed_text: '',
+    };
 
     this.audioChunks = [];
     this.rec = null;
@@ -74,7 +74,6 @@ class SpeechTestPage extends React.Component {
     this.setupMediaDevice();
   }
   componentWillMount() {
-
     if (this.props.studies && this.props.selectedStudy) {
       // use first element of selectedStudy
       const study = this.props.studies[this.props.selectedStudy[0]];
@@ -84,9 +83,8 @@ class SpeechTestPage extends React.Component {
 
       this.setState({
         study,
-      })
+      });
     }
-
   }
 
   setupMediaDevice() {
@@ -159,35 +157,34 @@ class SpeechTestPage extends React.Component {
     this.audioChunks = [];
     this.rec.start();
     this.setState({
-      recording: true
-    })
+      recording: true,
+    });
   }
 
   stopRecording() {
     this.rec.stop();
     this.setState({
-      recording: false
-    })
+      recording: false,
+    });
   }
 
   playRecording() {
     console.log('-- playRecording --');
   }
 
-  saveRecording =() => {
+  saveRecording = () => {
     console.log('-- saveRecording --');
 
-    //var rec_file      = document.getElementById("rec_file");
-    //rec_file.data     = this.blob;
 
-    //var dataFile = new File(this.blob, "rec_file");
-    //form.append("rec_file", dataFile);
-    let form = new FormData()
-    form.append('id', this.state.study.id)
+    let form = new FormData();
+    let user = JSON.parse(localStorage.getItem('user'));
+   
+    form.append('id', this.state.study.id);
+    if (user) {
+      form.append('user', user.email);
+    }
     form.append('text', document.getElementById('text').innerHTML);
     form.append('rec_file', this.blob, 'rec_data1.wav');
-
-    //form.append("rec_file", rec_file, "rec_file");
 
     var request = new XMLHttpRequest();
     var async = true;
@@ -208,17 +205,17 @@ class SpeechTestPage extends React.Component {
           if (this.comparison) {
             this.comparison.length > 0 ? this.accuracy_comparison() : null;
           } else {
-            toast.success('No Recording' , {
+            toast.success('No Recording', {
               position: toast.POSITION.TOP_RIGHT,
             });
           }
 
           this.setState({
-            transcribed_text: response.transcribed_text
-          })
+            transcribed_text: response.transcribed_text,
+          });
 
           if (this.state.transcribed_text === undefined) {
-            toast.success('No transcribed text' , {
+            toast.success('No transcribed text', {
               position: toast.POSITION.TOP_RIGHT,
             });
           }
@@ -226,22 +223,23 @@ class SpeechTestPage extends React.Component {
       };
     }
     request.send(form);
-  }
+  };
 
   handleNextParagraph = () => {
-    if(Object.keys(this.state.study).length > 0) {
-      const study = this.props.studies[this.props.studies.indexOf(this.state.study)+1];
+    if (Object.keys(this.state.study).length > 0) {
+      const study = this.props.studies[
+        this.props.studies.indexOf(this.state.study) + 1
+      ];
       this.setState({
         study,
-        transcribed_text: ''
-      })
+        transcribed_text: '',
+      });
     } else {
-      toast.error('No Paragraph Selected' , {
+      toast.error('No Paragraph Selected', {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
-
-  }
+  };
 
   accuracy_comparison = () => {
     console.log(this.comparison);
@@ -250,8 +248,6 @@ class SpeechTestPage extends React.Component {
       autoClose: 15000,
     });
   };
-
-
 
   saveRecording1() {
     console.log('-- saveRecording --');
@@ -273,17 +269,60 @@ class SpeechTestPage extends React.Component {
         <div>
           <div style={styles.div}>
             <Paper zDepth={3} style={styles.paperLeft}>
-              <div style={{backgroundColor: '#000', width: '100%', marginTop: '0px',  color: '#fff',paddingTop: '15px', height: '5%', fontSize: '0.9em', marginBottom: '30px'}}>Paragraph</div>
-              <p id='text' style={{margin: '0px', padding: '0px'}}>{this.state.study.Paragraph_Text}</p>
-              <div style={{backgroundColor: '#15A9E1', width: '100%', marginTop: '0px',  color: '#fff',paddingTop: '15px', height: '5%', fontSize: '0.9em', position: 'absolute', top: '48%', width:'63.2%'}}>Transcribed Audio Results</div>
-              {
-                this.state.transcribed_text !== undefined
-                  ? <p style={{position: 'absolute', top: '55%', width:'63.2%'}}>{this.state.transcribed_text}</p>
-                  : null
-              }
+              <div
+                style={{
+                  backgroundColor: '#000',
+                  width: '100%',
+                  marginTop: '0px',
+                  color: '#fff',
+                  paddingTop: '15px',
+                  height: '5%',
+                  fontSize: '0.9em',
+                  marginBottom: '30px',
+                }}
+              >
+                Paragraph
+              </div>
+              <p id="text" style={{ margin: '0px', padding: '0px 20px' }}>
+                {this.state.study.Paragraph_Text}
+              </p>
+              <div
+                style={{
+                  backgroundColor: '#15A9E1',
+                  width: '100%',
+                  marginTop: '0px',
+                  color: '#fff',
+                  paddingTop: '15px',
+                  height: '5%',
+                  fontSize: '0.9em',
+                  position: 'absolute',
+                  top: '48%',
+                  width: '63.2%',
+                }}
+              >
+                Transcribed Audio Results
+              </div>
+              {this.state.transcribed_text !== undefined ? (
+                <p style={{ position: 'absolute', top: '55%', width: '63.2%' }}>
+                  {this.state.transcribed_text}
+                </p>
+              ) : null}
             </Paper>
             <Paper zDepth={3} style={styles.paperRight}>
-              <div style={{backgroundColor: '#000', width: '100%', marginTop: '0px',  color: '#fff',paddingTop: '15px', height: '5%', fontSize: '0.9em', marginBottom: '30px'}}>Record and Analyse</div>
+              <div
+                style={{
+                  backgroundColor: '#000',
+                  width: '100%',
+                  marginTop: '0px',
+                  color: '#fff',
+                  paddingTop: '15px',
+                  height: '5%',
+                  fontSize: '0.9em',
+                  marginBottom: '30px',
+                }}
+              >
+                Record and Analyse
+              </div>
               <form
                 id="form1"
                 action="http://52.230.8.132:8080/api/matching_test"
@@ -292,67 +331,64 @@ class SpeechTestPage extends React.Component {
               >
                 <input type="hidden" name="text" value="text" />
                 <div style={styles.buttonsDiv}>
-              {
-                this.state.recording === true ?
-                <RaisedButton
-                    style={styles.individualButtons}
-                    buttonStyle={{height: '50px', }}
-                    backgroundColor={'darkgray'}
-                    overlayStyle={{height: '50px'}}
-                    label="Recording....."
-                    labelStyle={{textTransform: 'none', fontSize: '1em'}}
-                    labelColor={'#fff'}
-                  /> :
-                  <RaisedButton
+                  {this.state.recording === true ? (
+                    <RaisedButton
+                      style={styles.individualButtons}
+                      buttonStyle={{ height: '50px' }}
+                      backgroundColor={'darkgray'}
+                      overlayStyle={{ height: '50px' }}
+                      label="Recording....."
+                      labelStyle={{ textTransform: 'none', fontSize: '1em' }}
+                      labelColor={'#fff'}
+                    />
+                  ) : (
+                    <RaisedButton
                       style={styles.individualButtons}
                       backgroundColor={'#15A9E1'}
-                      buttonStyle={{height: '50px', }}
-                      overlayStyle={{height: '50px'}}
+                      buttonStyle={{ height: '50px' }}
+                      overlayStyle={{ height: '50px' }}
                       label="Record"
-                      labelStyle={{textTransform: 'none', fontSize: '1em'}}
+                      labelStyle={{ textTransform: 'none', fontSize: '1em' }}
                       labelColor={'#fff'}
                       onClick={this.startRecording}
                     />
-              }
-                <RaisedButton
-                  style={styles.individualButtons}
-                  buttonStyle={{height: '50px', }}
-                  overlayStyle={{height: '50px'}}
-                  label="Stop"
-                  labelStyle={{textTransform: 'none', fontSize: '1em'}}
-                  labelColor={'#fff'}
-                  backgroundColor={'#15A9E1'}
-                  onClick={this.stopRecording}
-                />
-              {
-                this.state.recording === true ?
-                 null :
+                  )}
                   <RaisedButton
                     style={styles.individualButtons}
-                    buttonStyle={{height: '50px', }}
-                    overlayStyle={{height: '50px'}}
-                    label="Analyse"
-                    labelStyle={{textTransform: 'none', fontSize: '1em'}}
+                    buttonStyle={{ height: '50px' }}
+                    overlayStyle={{ height: '50px' }}
+                    label="Stop"
+                    labelStyle={{ textTransform: 'none', fontSize: '1em' }}
                     labelColor={'#fff'}
                     backgroundColor={'#15A9E1'}
-                    onClick={this.saveRecording}
+                    onClick={this.stopRecording}
                   />
-              }
-                <ToastContainer autoClose={8000} />
-              {
-                this.state.recording === true ? null:
-                <RaisedButton
-                  label="Next Paragraph"
-                  labelColor={'#fff'}
-                  labelStyle={{textTransform: 'none', fontSize: '1em'}}
-                  style={styles.individualButtons}
-                  buttonStyle={{height: '50px', }}
-                  overlayStyle={{height: '50px'}}
-                  backgroundColor={'#15A9E1'}
-                  onClick={this.handleNextParagraph}
-                />
-              }
-              </div>
+                  {this.state.recording === true ? null : (
+                    <RaisedButton
+                      style={styles.individualButtons}
+                      buttonStyle={{ height: '50px' }}
+                      overlayStyle={{ height: '50px' }}
+                      label="Analyse"
+                      labelStyle={{ textTransform: 'none', fontSize: '1em' }}
+                      labelColor={'#fff'}
+                      backgroundColor={'#15A9E1'}
+                      onClick={this.saveRecording}
+                    />
+                  )}
+                  <ToastContainer autoClose={8000} />
+                  {this.state.recording === true ? null : (
+                    <RaisedButton
+                      label="Next Paragraph"
+                      labelColor={'#fff'}
+                      labelStyle={{ textTransform: 'none', fontSize: '1em' }}
+                      style={styles.individualButtons}
+                      buttonStyle={{ height: '50px' }}
+                      overlayStyle={{ height: '50px' }}
+                      backgroundColor={'#15A9E1'}
+                      onClick={this.handleNextParagraph}
+                    />
+                  )}
+                </div>
                 <audio id="recordedAudio" />
                 <a id="audioDownload" />
               </form>

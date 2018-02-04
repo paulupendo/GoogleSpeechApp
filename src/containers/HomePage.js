@@ -13,17 +13,16 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-import '../index.js'
-import { studyService } from '../services/study.service'
+import '../index.js';
+import { studyService } from '../services/study.service';
 const styles = {
   tableRows: {
     textAlign: 'center',
-    width: '200px'
-  }
-}
+    width: '200px',
+  },
+};
 
 class HomePage extends React.Component {
-
   constructor(props) {
     super(props);
   }
@@ -78,7 +77,6 @@ class HomePage extends React.Component {
       .catch(err => console.log('ERR', err));
   };
 
-
   // ------------------------
   // render
   // ------------------------
@@ -96,11 +94,27 @@ class HomePage extends React.Component {
         var study = this.props.studies[i];
         tableBody.push(
           <TableRow key={study.id}>
-            <TableRowColumn style={{width: '50px', textAlign: 'center'}}>{study.id}</TableRowColumn>
-            <TableRowColumn style={styles.tableRows}>{study.created_at}</TableRowColumn>
-            <TableRowColumn style={styles.tableRows}>{study.Status}</TableRowColumn>
-            <TableRowColumn style={styles.tableRows}>{study.GCS_Acc}</TableRowColumn>
-            <TableRowColumn style={styles.tableRows}>{study.GCS_Conf}</TableRowColumn>
+            <TableRowColumn style={{ width: '50px', textAlign: 'center' }}>
+              {study.id}
+            </TableRowColumn>
+            <TableRowColumn style={styles.tableRows}>
+              {study.created_at}
+            </TableRowColumn>
+            <TableRowColumn style={{ width: '150px' }}>
+              {study.Status}
+            </TableRowColumn>
+            <TableRowColumn style={styles.tableRows}>
+              {study.Procedure}
+            </TableRowColumn>
+            <TableRowColumn style={{ width: '150px' }}>
+              {study.GCS_Acc}
+            </TableRowColumn>
+            <TableRowColumn style={{ width: '150px' }}>
+              {study.GCS_Conf}
+            </TableRowColumn>
+            <TableRowColumn style={{ width: '150px' }}>
+              {study.Analysed_by}
+            </TableRowColumn>
           </TableRow>,
         );
       }
@@ -108,20 +122,52 @@ class HomePage extends React.Component {
 
     return (
       <MuiThemeProvider>
-        <div style={{display: 'flex', justifyContent: 'flex-end', marginRight: '4%'}}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            marginRight: '4%',
+          }}
+        >
           <ReactFileReader handleFiles={this.handleFiles} fileTypes={'.csv'}>
-            <RaisedButton className='btn' label="UPLOAD CSV" backgroundColor={'#15A9E1'} labelColor={'#fff'}/>
+            <RaisedButton
+              className="btn"
+              label="UPLOAD CSV"
+              backgroundColor={'#15A9E1'}
+              labelColor={'#fff'}
+            />
           </ReactFileReader>
         </div>
-        <div className='container'>
-          <Table onRowSelection={this.handleRowSelection} className='table' fixedHeader={true} height={'100%'}>
+        <div className="container">
+          <Table
+            onRowSelection={this.handleRowSelection}
+            className="table"
+            fixedHeader={true}
+            height={'100%'}
+          >
             <TableHeader>
-              <TableRow style={{backgroundColor: 'rgb(236, 236, 236)'}}>
-                <TableHeaderColumn style={{width: '50px'}}>Paragraph id</TableHeaderColumn>
-                <TableHeaderColumn style={styles.tableRows}>Date Uploaded</TableHeaderColumn>
-                <TableHeaderColumn style={styles.tableRows}>Status</TableHeaderColumn>
-                <TableHeaderColumn style={styles.tableRows}>GCS%</TableHeaderColumn>
-                <TableHeaderColumn style={styles.tableRows}>GCS conf</TableHeaderColumn>
+              <TableRow style={{ backgroundColor: 'rgb(236, 236, 236)' }}>
+                <TableHeaderColumn style={{ width: '50px' }}>
+                  Paragraph id
+                </TableHeaderColumn>
+                <TableHeaderColumn style={styles.tableRows}>
+                  Date Uploaded
+                </TableHeaderColumn>
+                <TableHeaderColumn style={{ width: '150px' }}>
+                  Status
+                </TableHeaderColumn>
+                <TableHeaderColumn style={styles.tableRows}>
+                  Procedure
+                </TableHeaderColumn>
+                <TableHeaderColumn style={{ width: '150px' }}>
+                  GCS%
+                </TableHeaderColumn>
+                <TableHeaderColumn style={{ width: '150px' }}>
+                  GCS conf
+                </TableHeaderColumn>
+                <TableHeaderColumn style={{ width: '150px' }}>
+                  Analysed By
+                </TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody showRowHover={true}>{tableBody}</TableBody>
